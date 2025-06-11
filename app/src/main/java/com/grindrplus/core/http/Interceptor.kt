@@ -55,11 +55,12 @@ class Interceptor(
         }
     }
 
-    private fun invokeMethodSafe(userSession: Any, s: String): Any {
+    private fun invokeMethodSafe(target: Any, methodName: String): Any? {
         return try {
-            userSession::class.java.getMethod(s).invoke(userSession)
+            target::class.java.getMethod(methodName).invoke(target)
         } catch (e: Exception) {
-            XposedBridge.log("Failed to invoke method: ${e.printStackTrace()} $s")
+            XposedBridge.log("Failed to invoke method $methodName: ${e.message}")
+            null
         }
     }
 
